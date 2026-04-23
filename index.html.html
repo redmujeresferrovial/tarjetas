@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Tarjeta · Red de Mujeres Ferrovial España</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --yellow: #F5D400;
+      --yellow-dark: #D4B800;
+      --yellow-pale: #FDF6C0;
+      --graphite: #1C2023;
+      --graphite-mid: #2E3439;
+      --graphite-light: #5A6370;
+      --white: #FFFFFF;
+      --off-white: #F7F6F2;
+      --border: #E0DDD5;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--off-white);
+      min-height: 100vh;
+      color: var(--graphite);
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--graphite);
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 4px solid var(--yellow);
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--yellow);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 18px; color: var(--graphite);
+    }
+    header h1 {
+      color: var(--white);
+      font-size: 14px; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    header span {
+      color: var(--yellow); font-size: 13px; font-weight: 400;
+      margin-left: auto; opacity: 0.85;
+    }
+
+    /* ── Main layout ── */
+    .main {
+      display: flex; gap: 48px;
+      padding: 48px 40px;
+      max-width: 1120px;
+      margin: 0 auto;
+      align-items: flex-start;
+    }
+
+    /* ── Form panel ── */
+    .form-panel { flex: 1; min-width: 300px; }
+
+    .form-panel h2 {
+      font-size: 26px; font-weight: 900; line-height: 1.2;
+      margin-bottom: 8px; color: var(--graphite);
+    }
+    .form-panel h2 em { font-style: normal; color: var(--graphite-light); }
+    .form-panel p.subtitle {
+      font-size: 14px; color: var(--graphite-light);
+      line-height: 1.6; margin-bottom: 32px;
+    }
+
+    .field { margin-bottom: 20px; }
+    label {
+      display: block; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--graphite-light); margin-bottom: 6px;
+    }
+    input, textarea {
+      width: 100%; padding: 12px 16px;
+      border: 2px solid var(--border); border-radius: 8px;
+      font-family: inherit; font-size: 15px; color: var(--graphite);
+      background: var(--white); transition: border-color 0.2s;
+      outline: none; resize: none;
+    }
+    input:focus, textarea:focus { border-color: var(--yellow-dark); }
+    input::placeholder, textarea::placeholder { color: #b0aaa0; }
+    textarea { height: 68px; line-height: 1.5; }
+
+    /* ── Inspiration chips ── */
+    .chips {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 8px;
+    }
+    .chip {
+      padding: 5px 12px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+      color: var(--graphite-light);
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .chip:hover { border-color: var(--graphite-light); color: var(--graphite); }
+    .chip.selected { background: var(--graphite); color: var(--yellow); border-color: var(--graphite); }
+
+    /* ── Style picker ── */
+    .style-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--graphite-light);
+      margin-bottom: 10px; display: block;
+    }
+    .style-picker { display: flex; gap: 10px; margin-bottom: 28px; }
+    .style-btn {
+      flex: 1; padding: 10px 8px;
+      border: 2px solid var(--border); border-radius: 8px;
+      font-size: 12px; font-weight: 600; cursor: pointer;
+      transition: all 0.2s; background: var(--white);
+      text-align: center; color: var(--graphite);
+    }
+    .style-btn:hover { border-color: var(--graphite-light); }
+    .style-btn.active { border-color: var(--graphite); background: var(--graphite); color: var(--yellow); }
+    .style-btn .swatch {
+      width: 24px; height: 24px; border-radius: 50%;
+      margin: 0 auto 6px; border: 2px solid rgba(0,0,0,0.1);
+    }
+
+    /* ── Download button ── */
+    .btn-download {
+      width: 100%; padding: 16px;
+      background: var(--yellow); color: var(--graphite);
+      font-family: inherit; font-size: 15px; font-weight: 800;
+      border: none; border-radius: 10px; cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.1s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-download:hover { background: var(--yellow-dark); }
+    .btn-download:active { transform: scale(0.98); }
+    .btn-download svg { flex-shrink: 0; }
+
+    .hint {
+      margin-top: 12px; font-size: 12px;
+      color: var(--graphite-light); text-align: center; line-height: 1.5;
+    }
+
+    /* ── Preview panel ── */
+    .preview-panel {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 16px;
+      position: sticky; top: 32px;
+    }
+    .preview-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--graphite-light);
+    }
+
+    /* ══════════════════════════
+       THE CARD
+    ══════════════════════════ */
+    #card {
+      width: 420px; height: 580px;
+      border-radius: 20px; overflow: hidden;
+      position: relative;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.15);
+      transition: background 0.3s;
+      flex-shrink: 0;
+    }
+
+    /* — Style: Oro — */
+    #card.style-oro { background: var(--yellow); }
+    #card.style-oro .card-top-bar { background: var(--graphite); }
+    #card.style-oro .card-network-name { color: var(--yellow); }
+    #card.style-oro .card-name { color: var(--graphite); }
+    #card.style-oro .card-role { color: var(--graphite-mid); }
+    #card.style-oro .card-word-big { color: var(--graphite); }
+    #card.style-oro .card-word-label { color: var(--graphite-mid); }
+    #card.style-oro .card-skill-pill { background: rgba(28,32,35,0.12); color: var(--graphite); }
+    #card.style-oro .card-skill-label { color: var(--graphite-mid); }
+    #card.style-oro .card-want-box { background: rgba(28,32,35,0.1); border-left: 4px solid var(--graphite); }
+    #card.style-oro .card-want-text { color: var(--graphite); }
+    #card.style-oro .card-want-label { color: var(--graphite-mid); }
+    #card.style-oro .card-footer { color: var(--graphite-mid); }
+    #card.style-oro .card-blob-1 { background: rgba(28,32,35,0.07); }
+    #card.style-oro .card-blob-2 { background: rgba(28,32,35,0.04); }
+
+    /* — Style: Noche — */
+    #card.style-noche { background: var(--graphite); }
+    #card.style-noche .card-top-bar { background: var(--yellow); }
+    #card.style-noche .card-network-name { color: var(--graphite); }
+    #card.style-noche .card-name { color: var(--white); }
+    #card.style-noche .card-role { color: rgba(255,255,255,0.5); }
+    #card.style-noche .card-word-big { color: var(--yellow); }
+    #card.style-noche .card-word-label { color: rgba(255,255,255,0.45); }
+    #card.style-noche .card-skill-pill { background: rgba(245,212,0,0.15); color: var(--yellow); }
+    #card.style-noche .card-skill-label { color: rgba(255,255,255,0.45); }
+    #card.style-noche .card-want-box { background: rgba(255,255,255,0.07); border-left: 4px solid var(--yellow); }
+    #card.style-noche .card-want-text { color: rgba(255,255,255,0.85); }
+    #card.style-noche .card-want-label { color: rgba(255,255,255,0.4); }
+    #card.style-noche .card-footer { color: rgba(255,255,255,0.3); }
+    #card.style-noche .card-blob-1 { background: rgba(245,212,0,0.06); }
+    #card.style-noche .card-blob-2 { background: rgba(245,212,0,0.04); }
+
+    /* — Style: Blanca — */
+    #card.style-blanca { background: var(--white); }
+    #card.style-blanca .card-top-bar { background: var(--yellow); }
+    #card.style-blanca .card-network-name { color: var(--graphite); }
+    #card.style-blanca .card-name { color: var(--graphite); }
+    #card.style-blanca .card-role { color: var(--graphite-light); }
+    #card.style-blanca .card-word-big { color: var(--graphite); }
+    #card.style-blanca .card-word-label { color: var(--graphite-light); }
+    #card.style-blanca .card-skill-pill { background: var(--yellow-pale); color: var(--graphite-mid); }
+    #card.style-blanca .card-skill-label { color: var(--graphite-light); }
+    #card.style-blanca .card-want-box { background: var(--off-white); border-left: 4px solid var(--yellow); }
+    #card.style-blanca .card-want-text { color: var(--graphite); }
+    #card.style-blanca .card-want-label { color: var(--graphite-light); }
+    #card.style-blanca .card-footer { color: #b0aaa0; }
+    #card.style-blanca .card-blob-1 { background: rgba(245,212,0,0.14); }
+    #card.style-blanca .card-blob-2 { background: rgba(245,212,0,0.07); }
+
+    /* Card internals */
+    .card-top-bar { height: 8px; width: 100%; }
+
+    .card-blob-1, .card-blob-2 {
+      position: absolute; border-radius: 50%; pointer-events: none;
+    }
+    .card-blob-1 { width: 260px; height: 260px; bottom: -70px; right: -70px; }
+    .card-blob-2 { width: 160px; height: 160px; top: 50px; right: -50px; }
+
+    .card-inner {
+      padding: 22px 28px 24px;
+      height: calc(100% - 8px);
+      display: flex; flex-direction: column;
+      position: relative; z-index: 1;
+    }
+
+    /* Card header row */
+    .card-header {
+      display: flex; align-items: center;
+      gap: 10px; margin-bottom: 18px;
+    }
+    .card-logo {
+      width: 28px; height: 28px;
+      border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 13px;
+      flex-shrink: 0;
+    }
+    .card-network-name {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      line-height: 1.35; flex: 1;
+    }
+
+    /* Name & role */
+    .card-name {
+      font-size: 30px; font-weight: 900;
+      line-height: 1.05; letter-spacing: -0.02em;
+      word-break: break-word;
+    }
+    .card-role {
+      font-size: 13px; font-weight: 400;
+      margin-top: 6px; letter-spacing: 0.01em;
+    }
+
+    .card-divider {
+      height: 1px; background: currentColor;
+      opacity: 0.12; margin: 14px 0;
+    }
+
+    /* Word */
+    .card-word-section { margin-bottom: 10px; }
+    .card-word-label {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1px;
+    }
+    .card-word-big {
+      font-size: 34px; font-weight: 900;
+      line-height: 1; letter-spacing: -0.03em; word-break: break-word;
+    }
+
+    /* Skills pills */
+    .card-skill-label {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 5px; margin-top: 10px;
+    }
+    .card-skill-pills {
+      display: flex; flex-wrap: wrap; gap: 5px;
+    }
+    .card-skill-pill {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* Want box */
+    .card-want-box {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+    }
+    .card-want-label {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .card-want-text {
+      font-size: 12px; font-weight: 400;
+      font-style: italic; line-height: 1.5;
+    }
+
+    /* Footer */
+    .card-footer {
+      margin-top: auto; padding-top: 10px;
+      font-size: 10px; font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 860px) {
+      .main { flex-direction: column; align-items: center; padding: 32px 20px; }
+      .preview-panel { position: static; }
+      #card { width: 340px; height: 470px; }
+      .card-name { font-size: 24px; }
+      .card-word-big { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">F</div>
+  <h1>Red de Mujeres · España</h1>
+  <span>Genera tu tarjeta</span>
+</header>
+
+<div class="main">
+
+  <!-- ══ FORM ══ -->
+  <div class="form-panel">
+    <h2>Cuéntanos<br><em>quién eres</em></h2>
+    <p class="subtitle">Rellena los campos, elige tu estilo y descarga tu tarjeta para compartirla en la comunidad.</p>
+
+    <!-- Nombre -->
+    <div class="field">
+      <label for="inp-name">Tu nombre</label>
+      <input id="inp-name" type="text" placeholder="Ej. Lucía Martínez" maxlength="40" oninput="updateCard()">
+    </div>
+
+    <!-- Área / Rol -->
+    <div class="field">
+      <label for="inp-role">Área / Rol</label>
+      <input id="inp-role" type="text" placeholder="Ej. Ingeniería · Ferrovial Construcción" maxlength="60" oninput="updateCard()">
+    </div>
+
+    <!-- Palabra + chips inspiradores -->
+    <div class="field">
+      <label for="inp-word">La palabra que te define</label>
+      <input id="inp-word" type="text" placeholder="Ej. Curiosa, Conectora, Resiliente…" maxlength="20" oninput="updateCard()">
+      <div class="chips" id="word-chips">
+        <span class="chip" onclick="selectChip(this, 'inp-word')">Curiosa</span>
+        <span class="chip" onclick="selectChip(this, 'inp-word')">Conectora</span>
+        <span class="chip" onclick="selectChip(this, 'inp-word')">Estratega</span>
+        <span class="chip" onclick="selectChip(this, 'inp-word')">Resiliente</span>
+        <span class="chip" onclick="selectChip(this, 'inp-word')">Constructora</span>
+        <span class="chip" onclick="selectChip(this, 'inp-word')">Pionera</span>
+        <span class="chip" onclick="selectChip(this, 'inp-word')">Creativa</span>
+        <span class="chip" onclick="selectChip(this, 'inp-word')">Analítica</span>
+        <span class="chip" onclick="selectChip(this, 'inp-word')">Mentora</span>
+        <span class="chip" onclick="selectChip(this, 'inp-word')">Valiente</span>
+      </div>
+    </div>
+
+    <!-- Qué se te da bien -->
+    <div class="field">
+      <label for="inp-skill">Puedo ayudarte con...</label>
+      <input id="inp-skill" type="text" placeholder="Ej. Excel, negociación, hablar en público, gestión de equipos…" maxlength="80" oninput="updateCard()">
+    </div>
+
+    <!-- Qué quieres de la comunidad -->
+    <div class="field">
+      <label for="inp-want">Mi propuesta para la Red</label>
+      <textarea id="inp-want" placeholder="Ej. Crear espacios de mentoring, visibilizar referentes internas, hablar de liderazgo femenino…" maxlength="120" oninput="updateCard()"></textarea>
+    </div>
+
+    <!-- Estilo -->
+    <span class="style-label">Elige tu estilo</span>
+    <div class="style-picker">
+      <button class="style-btn active" onclick="setStyle('oro', this)">
+        <div class="swatch" style="background:#F5D400;"></div>Oro
+      </button>
+      <button class="style-btn" onclick="setStyle('noche', this)">
+        <div class="swatch" style="background:#1C2023; border-color:#444;"></div>Noche
+      </button>
+      <button class="style-btn" onclick="setStyle('blanca', this)">
+        <div class="swatch" style="background:#fff; border-color:#ccc;"></div>Blanca
+      </button>
+    </div>
+
+    <button class="btn-download" onclick="downloadCard()">
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 4v11"/>
+      </svg>
+      Descargar mi tarjeta
+    </button>
+    <p class="hint">Descarga la imagen y publícala como comentario<br>en el post de la Red de Mujeres · Viva Engage</p>
+  </div>
+
+  <!-- ══ PREVIEW ══ -->
+  <div class="preview-panel">
+    <span class="preview-label">Vista previa</span>
+
+    <div id="card" class="style-oro">
+      <div class="card-top-bar"></div>
+      <div class="card-blob-1"></div>
+      <div class="card-blob-2"></div>
+      <div class="card-inner">
+
+        <!-- Header row: logo + red name + emoji -->
+        <div class="card-header">
+          <div class="card-logo" id="card-logo-el">F</div>
+          <div class="card-network-name">Red de Mujeres<br>Ferrovial · España</div>
+        </div>
+
+        <!-- Name & role -->
+        <div class="card-name" id="card-name-el">Tu nombre aquí</div>
+        <div class="card-role" id="card-role-el">Tu área · Tu rol</div>
+
+        <div class="card-divider"></div>
+
+        <!-- Word -->
+        <div class="card-word-section">
+          <div class="card-word-label">Mi palabra</div>
+          <div class="card-word-big" id="card-word-el">Palabra</div>
+        </div>
+
+        <!-- Skills -->
+        <div class="card-skill-label">Puedo ayudarte con</div>
+        <div class="card-skill-pills" id="card-skill-pills-el">
+          <span class="card-skill-pill">—</span>
+        </div>
+
+        <!-- What you want -->
+        <div class="card-want-box">
+          <div class="card-want-label">Mi propuesta para la Red</div>
+          <div class="card-want-text" id="card-want-el">¿Cuál es tu propuesta?</div>
+        </div>
+
+        <div class="card-footer">ferrovial.com · 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentStyle = 'oro';
+
+  /* ── Chip selector ── */
+  function selectChip(chip, inputId) {
+    const input = document.getElementById(inputId);
+    // Toggle: if already selected, deselect
+    const isSelected = chip.classList.contains('selected');
+    document.querySelectorAll('#word-chips .chip').forEach(c => c.classList.remove('selected'));
+    if (!isSelected) {
+      chip.classList.add('selected');
+      input.value = chip.textContent;
+    } else {
+      input.value = '';
+    }
+    updateCard();
+  }
+
+  /* ── Build skill pills ── */
+  function buildSkillPills(raw) {
+    const container = document.getElementById('card-skill-pills-el');
+    container.innerHTML = '';
+    if (!raw.trim()) {
+      const pill = document.createElement('span');
+      pill.className = 'card-skill-pill';
+      pill.textContent = '—';
+      container.appendChild(pill);
+      return;
+    }
+    const items = raw.split(/[,·\/]/).map(s => s.trim()).filter(Boolean).slice(0, 4);
+    items.forEach(item => {
+      const pill = document.createElement('span');
+      pill.className = 'card-skill-pill';
+      pill.textContent = item;
+      container.appendChild(pill);
+    });
+  }
+
+  /* ── Main update ── */
+  function updateCard() {
+    const name  = document.getElementById('inp-name').value.trim();
+    const role  = document.getElementById('inp-role').value.trim();
+    const word  = document.getElementById('inp-word').value.trim();
+    const skill = document.getElementById('inp-skill').value.trim();
+    const want  = document.getElementById('inp-want').value.trim();
+
+    document.getElementById('card-name-el').textContent = name || 'Tu nombre aquí';
+    document.getElementById('card-role-el').textContent = role || 'Tu área · Tu rol';
+    document.getElementById('card-word-el').textContent = word || 'Palabra';
+    document.getElementById('card-want-el').textContent = want || '¿Cuál es tu propuesta?';
+
+    buildSkillPills(skill);
+
+    // Sync chip highlight with typed word
+    document.querySelectorAll('#word-chips .chip').forEach(c => {
+      c.classList.toggle('selected', c.textContent === word);
+    });
+
+    // Logo color
+    const logo = document.getElementById('card-logo-el');
+    if (currentStyle === 'noche') {
+      logo.style.background = '#F5D400'; logo.style.color = '#1C2023';
+    } else {
+      logo.style.background = '#1C2023'; logo.style.color = '#F5D400';
+    }
+  }
+
+  /* ── Style switcher ── */
+  function setStyle(style, btn) {
+    currentStyle = style;
+    document.getElementById('card').className = 'style-' + style;
+    document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateCard();
+  }
+
+  /* ── Download ── */
+  function downloadCard() {
+    const card = document.getElementById('card');
+    const name = document.getElementById('inp-name').value.trim() || 'tarjeta';
+    const fileName = 'Red-Mujeres-Ferrovial-' + name.replace(/\s+/g, '-') + '.png';
+    html2canvas(card, {
+      scale: 3, useCORS: true, allowTaint: true,
+      backgroundColor: null, logging: false
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = fileName;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+
+  // Init
+  updateCard();
+</script>
+
+</body>
+</html>
